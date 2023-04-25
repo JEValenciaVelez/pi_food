@@ -19,9 +19,9 @@ const getRecipeById = async (id) => {
    const recipe = {
     id: data.id,
     name: data.title,
-    summary: data.summary.replace(),
+    summary: data.summary.replace(/<\/?[^>]+(>|$)/g, ""), //elimino caracteres irregulares del texto
     healthscore: data.healthScore,
-    steps: data.instructions,
+    steps: data.instructions.replace(/<\/?[^>]+(>|$)/g, ""),
     vegetarian: data.vegetarian,
     vegan: data.vegan,
     glutenFree: data.glutenFree,
