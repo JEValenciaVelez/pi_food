@@ -49,14 +49,26 @@ const getRecipeByName = async (name) =>{
 
     const elementsOfData = Object.values(data)[0];
 
-    const results = [];
+    let results = [];
 
     for(let i=0; i<elementsOfData.length; i++){
         const arr = elementsOfData[i].title.toLowerCase().replace(',','').split(' ');
        //console.log(arr,arr.includes(nameToLowerCase))
-       if(arr.includes(nameToLowerCase)) results.push(elementsOfData[i].title);
+       if(arr.includes(nameToLowerCase)) results.push(elementsOfData[i]);
        
     }
+
+    results= results.map(el=>{
+        return {
+            id:el.id,
+            nombre: el.title,
+            pasoApaso: el.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+            vegetarian: el.vegetarian,
+            vegan: el.vegan,
+            glutenFree: el.glutenFree,
+            diets: el.diets
+        }
+    })
 
     //console.log(results);
 
