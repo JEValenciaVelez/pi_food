@@ -3,7 +3,8 @@ const axios = require('axios');
 const{URL, API_KEY} = process.env;
 
 
-
+const listRecipes = [];  // data para actualizar la base de datos
+const listDiets = [];
 
 
 const getRecipeById = async (id) => {
@@ -26,18 +27,46 @@ const getRecipeById = async (id) => {
     vegan: data.vegan,
     glutenFree: data.glutenFree,
     diets: data.diets
+
+    };
+
+    listRecipes.push(recipe);
+
+    return recipe;
+   
 };
 
-   return recipe;
 
-     
+const getRecipeByName = async (name) =>{
+
+    const nameToLowerCase = name.toLowerCase();
+
+    const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`);   
+
+    const data = response.data;
+
+    if(!data) throw new Error('Not found');
+
+    const elementsOfData = Object.values(data)[0];
+
+    const results = [];
+
+    for(let i=0; i<elementsOfData.length; i++){
+        const arr = elementsOfData[i].title.toLowerCase().replace(',','').split(' ');
+       //console.log(arr,arr.includes(nameToLowerCase))
+       if(arr.includes(nameToLowerCase)) results.push(elementsOfData[i].title);
+       
+    }
+
+    //console.log(results);
+
+    return results;
+
+    
 };
 
 
 
 
 
-
-
-
-module.exports = {getRecipeById};
+module.exports = {getRecipeById, getRecipeByName};

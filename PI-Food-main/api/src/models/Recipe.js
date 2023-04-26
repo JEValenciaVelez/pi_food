@@ -15,8 +15,8 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     Imagen: {//columna
-      type: DataTypes.BLOB, //tipo de dato para imagen
-      allowNull: false       // siempre debe ir una imagen, la columna no puede venir nula
+      type: DataTypes.STRING, 
+      allowNull: false       
     },
     ResumenDelPlato:{
       type: DataTypes.STRING,

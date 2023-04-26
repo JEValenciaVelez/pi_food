@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getRecipeById } = require('../controllers');
+const { getRecipeById, getRecipeByName } = require('../controllers');
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -25,9 +25,15 @@ router.get('/recipes/:idRecipe', async (req, res)=>{
 // Debe funcionar tanto para las recetas de la API como para las de la base de datos.
 
 
-router.get('/recipes/',  (req, res)=>{
+router.get('/recipes/', async (req, res)=>{
+
     const{name} = req.query;
-    res.status(200).send(`nombre de receta ${name}`)
+    
+    try{
+        res.status(200).json( await getRecipeByName(name));
+    }catch(error){
+        res.status(404).json({err: error.message});
+    }
 });
 
 // Esta ruta debe obtener todas aquellas recetas que coincidan con el nombre recibido por query. (No es necesario que sea una coincidencia exacta).
