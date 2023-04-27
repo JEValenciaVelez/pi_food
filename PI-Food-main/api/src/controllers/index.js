@@ -160,13 +160,19 @@ const getDiets = async () => {
         })
     });
 
-    //console.log(Diet)
+    // const descripcionTabla = await Diet.describe(); // describe la tabla Diet
+
+    // console.log(descripcionTabla);
+    await Diet.sync(); // sincroniza el modelo con la base de datos
 
     const dietsEnBD = await Diet.findAll(); // obtiene todos los registros de la tabla Diet en un array
     
     const nombres = dietsEnBD.map((diet) => diet.Nombre); // obtiene la columna Nombre de cada registro
     
-    console.log(nombres); // muestra todos los valores de la columna Nombre
+    //console.log(nombres); // muestra todos los valores de la columna Nombre
+    if(nombres.length<1) throw new Error('No existen registros');
+
+    return nombres.join(',');
     
 };
 
