@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getRecipeById, getRecipeByName } = require('../controllers');
+const { getRecipeById, getRecipeByName, createRecipe, getDiets } = require('../controllers');
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -43,16 +43,26 @@ router.get('/recipes/', async (req, res)=>{
 
 
 
-router.post('/recipes', (req, res)=>{
+router.post('/recipes', async (req, res)=>{
     const recipe = req.body;
-    res.status(200).json({nuevaReceta: recipe});
+
+    try{
+        res.status(200).json(await createRecipe(recipe));
+    }catch(error){
+        res.status(404).json({err: error.message});
+    }
 })
 
 
 
-router.get('/diets',(req, res)=>{
-    const {name, age} = req.body;
-    res.status(200).send(`name: ${name}, edad: ${age}`);
+router.get('/diets',async (req, res)=>{
+    
+    
+    try{
+        res.status(200).json(await getDiets())
+    }catch(error){
+
+    }
 })
 
 

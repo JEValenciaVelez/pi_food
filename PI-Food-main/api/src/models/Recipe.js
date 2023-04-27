@@ -14,21 +14,21 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    Imagen: {//columna
+    imagen: {//columna
       type: DataTypes.STRING, 
-      allowNull: false       
+      allowNull: true       
     },
-    ResumenDelPlato:{
+    ResumenPlato:{
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     healthScore: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     PasoApaso:{
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     }
   });
 };
