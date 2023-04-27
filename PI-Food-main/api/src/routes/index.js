@@ -61,7 +61,7 @@ router.get('/diets',async (req, res)=>{
     try{
         res.status(200).json(await getDiets())
     }catch(error){
-
+        res.status(404).json({err: error.message});
     }
 })
 

@@ -60,8 +60,6 @@ const getRecipeByName = async (name) =>{
 
     //console.log(data)
 
-    //if(!data) throw new Error('Not found');
-
     const elementsOfData = Object.values(data)[0];
     //console.log(elementsOfData)
 
@@ -74,6 +72,7 @@ const getRecipeByName = async (name) =>{
     if(recetaEnBd) return recetaEnBd;
 
     //console.log(recetaEnBd)
+    if(!data) throw new Error('No se encontro receta');
 
     let results = [];
 
@@ -96,11 +95,7 @@ const getRecipeByName = async (name) =>{
         }
     })
 
-    
-
-    return results;
-
-    
+    return results;  
 };
 
 
@@ -139,11 +134,40 @@ const getDiets = async () => {
 
     const data = response.data;
 
-    if(!data) throw new Error('Not found');
-
+    //console.log(data);
     const elementsOfData = Object.values(data)[0];
 
-    return elementsOfData;
+    const allDiets = [];
+
+    //extraigo de la api la datas de dietas y la guardo en un array
+     elementsOfData.forEach(async el => {
+        //console.log(el.diets.join(','));
+        allDiets.push(el.diets.join(',').split(','));
+    });
+
+    //console.log(allDiets)
+//como allDiets es un array de arrays, para eliminar los arrays internos y dejar solo los strings en un solo array 
+    const newArray = allDiets.flat(); //guardo alldiets en newarray sin los arrays anidados
+
+    const newArrayUnico = newArray.filter((item,index,self)=> self.indexOf(item)===index); // eliminar elementos duplicados
+
+    //console.log(newArrayUnico);
+
+    //ahora puedo guardar cada elemento del array en la tabla diets usando un foreach
+    newArrayUnico.forEach(async el=>{
+        await Diet.create({
+            Nombre: el
+        })
+    });
+
+    //console.log(Diet)
+
+    const dietsEnBD = await Diet.findAll(); // obtiene todos los registros de la tabla Diet en un array
+    
+    const nombres = dietsEnBD.map((diet) => diet.Nombre); // obtiene la columna Nombre de cada registro
+    
+    console.log(nombres); // muestra todos los valores de la columna Nombre
+    
 };
 
 
