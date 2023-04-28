@@ -1,6 +1,5 @@
 
 const axios = require('axios');
-const listRecipes = require('../utils/data');
 const {Recipe, Diet} = require('../db');
 const{URL, API_KEY} = process.env;
 
@@ -12,11 +11,11 @@ const getRecipeById = async (id) => {
    const response = await axios.get(`${URL}${id}/information?apiKey=${API_KEY}`);   
 
    const data = response.data;
+     
 
-   //console.log(data);
+   if(data){
 
-  // if(!data) throw new Error(`Not Found`);
-
+     //abstraigo data de la api
    const recipe = {
     id: data.id,
     name: data.title,
@@ -30,24 +29,24 @@ const getRecipeById = async (id) => {
 
     };
 
-    await Recipe.create({
-        ID: data.id,
-        Nombre: data.title,
-        imagen: data.image,
-        ResumenPlato: data.summary.replace(/<\/?[^>]+(>|$)/g, "").substring(1,50),
-        healthScore: data.healthscore,
-        PasoApaso: data.instructions.replace(/<\/?[^>]+(>|$)/g, "").substring(1,100)
-    });
-
-    await Diet.create({
-        ID: data.id,
-        Nombre: data.diets.join(',')
-
-    })
-
     return recipe;
+
+   }
+
+    //sincronizo la tabla Recipe de base de datos
+    await Recipe.sync();
+
+    //de la tabla me traigo por id
+    const RecetasEnBd = await Recipe.findAll({
+        where:{ID: id}
+    });
+    // const recetaById = RecetasEnBd.map(rec=> rec.ID === id);
+
+     return RecetasEnBd;
+
    
 };
+
 
 
 const getRecipeByName = async (name) =>{
@@ -58,45 +57,47 @@ const getRecipeByName = async (name) =>{
 
     const data = response.data;
 
-    //console.log(data)
+    if(data){
 
-    const elementsOfData = Object.values(data)[0];
-    //console.log(elementsOfData)
-
-    const recetaEnBd = await Recipe.findAll({
-       where: {
-        Nombre: name
+        const elementsOfData = Object.values(data)[0];
+        //console.log(elementsOfData)
+        let results = [];
+    
+        for(let i=0; i<elementsOfData.length; i++){
+            const arr = elementsOfData[i].title.toLowerCase().replace(',','').split(' ');
+           console.log(arr,arr.includes(nameToLowerCase))
+           if(arr.includes(nameToLowerCase)) results.push(elementsOfData[i]);
+           
         }
-    });
-
-    if(recetaEnBd) return recetaEnBd;
-
-    //console.log(recetaEnBd)
-    if(!data) throw new Error('No se encontro receta');
-
-    let results = [];
-
-    for(let i=0; i<elementsOfData.length; i++){
-        const arr = elementsOfData[i].title.toLowerCase().replace(',','').split(' ');
-       console.log(arr,arr.includes(nameToLowerCase))
-       if(arr.includes(nameToLowerCase)) results.push(elementsOfData[i]);
-       
+    
+        results= results.map(el=>{
+            return {
+                id:el.id,
+                name: el.title,
+                summary: el.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+                vegetarian: el.vegetarian,
+                vegan: el.vegan,
+                glutenFree: el.glutenFree,
+                diets: el.diets
+            }
+        })
+    
+        return results;  
     }
 
-    results= results.map(el=>{
-        return {
-            id:el.id,
-            name: el.title,
-            summary: el.summary.replace(/<\/?[^>]+(>|$)/g, ""),
-            vegetarian: el.vegetarian,
-            vegan: el.vegan,
-            glutenFree: el.glutenFree,
-            diets: el.diets
-        }
-    })
+   
+    const recetaEnBd = await Recipe.findAll({
+        where: {
+         Nombre: name
+         }
+     });
+ 
+     if(!recetaEnBd) throw new Error('No se encontraron registros');
 
-    return results;  
+     return recetaEnBd;
 };
+
+
 
 
 const createRecipe = async (recipe) => {
@@ -127,6 +128,9 @@ const createRecipe = async (recipe) => {
     return `Receta creada con exito`;
   
 };
+
+
+
 
 const getDiets = async () => {
 
