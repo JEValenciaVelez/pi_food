@@ -1,13 +1,27 @@
 import './App.css';
-import LandingPage from './components/LandingPage/LandingPage';
+import { Route, Routes } from 'react-router-dom';
+import Inicio from './components/Inicio/Inicio';
+import Home from './components/Home';
+import RecipeDetail from './components/RecipeDetail/RecipeDetail';
+import NewRecipe from './components/NewRecipe/NewRecipe';
+import React from 'react';
+
+
 
 function App() {
+
+
   return (
-    <div className="App">
-      <h1>Henry Food</h1>
-      <LandingPage/>
-    </div>
+   <Routes>
+    <Route path='/' element={<Inicio/>} />
+    <Route path='/home' element={<Home/>} />
+    <Route path='/recipes/:id' element={<RecipeDetail/>} />
+    <Route path='/recipes/' element={<NewRecipe/>} />
+   </Routes>
   );
 }
+
+
+
 
 export default App;

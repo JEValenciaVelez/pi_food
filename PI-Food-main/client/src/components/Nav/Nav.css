@@ -1,0 +1,5 @@
+
+.nav-bar {
+    background-color: #dbac11; /* Color de fondo */
+    overflow: hidden; /* Para ocultar los elementos que se salgan del nav-bar */
+  }
