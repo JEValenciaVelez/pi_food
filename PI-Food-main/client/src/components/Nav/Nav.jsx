@@ -10,6 +10,7 @@ const Nav = () => {
             <Link to='/home'>
             <img src="" alt="logo.png" />
             </Link>
+            <input type="text" placeholder="Busca tus recetas"/>
             <Link to='/recipes'>
             <button>New Recipe</button>
             </Link>
