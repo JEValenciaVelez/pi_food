@@ -1,16 +1,38 @@
-
+import { useEffect, useState } from 'react';
+import {useParams} from 'react-router-dom';
+import axios from 'axios';
+import './RecipeDetail.css';
 
 
 const RecipeDetail = ()=> {
 
+    const {id} = useParams();
+    const [recipe, setRecipe] = useState({});
+
+    useEffect(()=>{
+        axios(`http://localhost:3001/recipes/${id}`)
+        .then(({data})=>{
+            //console.log(data)
+            if(data.id) setRecipe(data);
+            else window.alert('No hay recetas con ese id');
+        });
+        return setRecipe({});
+    }, [id]);
+
+    console.log(recipe)
+
     return (
        <div className="container">
-        <h1>title</h1>
-        <img src="" alt="" />
+        <h1>Detalle</h1>
+        <h2>{recipe.name}</h2>
+        <img src={recipe.image} alt="" />
         <h2>Resumen del plato</h2>
-        <p>Summary</p>
-        <h2>Healtscore</h2>
+        <p>{recipe.summary}</p>
+        <h2>Healtscore: {recipe.healthscore}</h2>
         <h2>Paso a paso</h2>
+        <p>{recipe.steps}</p>
+        <h2>Tipos de dieta</h2>
+        <p>{recipe.diets}</p>
        </div>
     )
 };

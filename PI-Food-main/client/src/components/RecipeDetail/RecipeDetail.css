@@ -1,0 +1,57 @@
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 30px;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  
+  .healthscore {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #008000;
+  }
+  
+  .diets {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  
+  .diets > span {
+    font-size: 1.2rem;
+    padding: 6px 12px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background-color: #F2F2F2;
+  }
+  
+  

@@ -11,7 +11,7 @@ const Card = () => {
             {
                 data.map(el => (
                     <div key={el.id}>
-                        <Link to='/recipes/:id'>
+                        <Link to={`/recipes/${el.id}`}>
                         <h2>{el.title}</h2>
                         </Link>
                         <img src={el.image} alt="" />
