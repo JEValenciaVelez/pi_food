@@ -7,7 +7,7 @@ const Cards = () => {
     return(
         <div>
             <div className="cards-container">
-                <h1>Aqui van las card</h1>
+                <h1>Recetas Disponibles</h1>
                 <Card/>
             </div>
         </div>
