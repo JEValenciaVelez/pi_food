@@ -8,6 +8,7 @@ const NewRecipe = () => {
     const [selectedDiets, setSelectedDiets] = useState([]);
 
     const handleDietChange = (e)=>{
+        console.log(e.target)
         const {value, checked} = e.target;
         if(checked){
             setSelectedDiets(prevSelectecDiets=>[...prevSelectecDiets, value]);

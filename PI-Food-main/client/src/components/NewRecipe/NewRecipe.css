@@ -73,4 +73,21 @@
   input[type="checkbox"] {
     margin-right: 0.5rem;
   }
+
+  input[type="checkbox"]:checked + label:before {
+    content: "✓";
+    color: green;
+    font-weight: bold;
+  }
+
+  
+  
+  
+  /* En este ejemplo, cuando el checkbox esté seleccionado, se mostrará un tick verde (✓) a la derecha del checkbox. Puedes ajustar el tamaño, color y posición del tick según tus necesidades. */
+  
+  
+  
+  
+  
+  
   
