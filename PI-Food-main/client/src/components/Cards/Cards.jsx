@@ -1,5 +1,6 @@
 
 import Card from "./Card";
+import './Cards.css'
 
 const Cards = () => {
 

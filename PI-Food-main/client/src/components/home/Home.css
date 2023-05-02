@@ -1,0 +1,48 @@
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.display-cards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.enunciado1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.enunciado2 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .display-cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .enunciado1 {
+    font-size: 3rem;
+    margin-right: 2rem;
+    margin-bottom: 0;
+  }
+
+  .enunciado2 {
+    font-size: 2rem;
+    margin-bottom: 0;
+  }
+}
+
+
+  
