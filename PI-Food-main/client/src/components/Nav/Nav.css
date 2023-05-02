@@ -3,65 +3,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #F5F5F5;
-  padding: 10px 20px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.nav-bar img {
-  width: 50px;
-  height: auto;
-}
-
-.nav-search {
-  flex: 1;
-  margin: 0 20px;
-}
-
-.nav-search input[type="text"] {
-  width: 100%;
-  border: none;
+.nav-filters select {
+  margin-right: 10px;
+  padding: 5px;
   border-radius: 5px;
-  padding: 8px;
-  font-size: 16px;
+  border: 1px solid #ccc;
 }
 
-.nav-buttons {
-  display: flex;
-  align-items: center;
+.nav-order button {
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .nav-buttons button {
-  margin-left: 10px;
-  border: none;
+  padding: 5px;
   border-radius: 5px;
-  padding: 8px;
-  background-color: #FFCC00;
-  color: white;
-  font-size: 16px;
+  background-color: #1abc9c;
+  color: #fff;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .nav-buttons button:hover {
-  background-color: #FFB300;
-}
-
-.filter-buttons {
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-}
-
-.filter-buttons label {
-  margin-right: 10px;
-  font-size: 16px;
-}
-
-.filter-buttons select {
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
+  background-color: #148f77;
 }

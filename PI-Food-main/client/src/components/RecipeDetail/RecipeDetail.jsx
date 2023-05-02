@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import axios from 'axios';
 import './RecipeDetail.css';
 
@@ -13,7 +13,7 @@ const RecipeDetail = ()=> {
         axios(`http://localhost:3001/recipes/${id}`)
         .then(({data})=>{
             //console.log(data)
-            if(data.id) setRecipe(data);
+            if(data.id ) setRecipe(data);
             else window.alert('No hay recetas con ese id');
         });
         return setRecipe({});
@@ -24,7 +24,10 @@ const RecipeDetail = ()=> {
     return (
        <div className="container">
         <h1>Detalle</h1>
+        <Link to='/home'>
         <h2>{recipe.name}</h2>
+        </Link>
+        
         <img src={recipe.image} alt="" />
         <h2>Resumen del plato</h2>
         <p>{recipe.summary}</p>

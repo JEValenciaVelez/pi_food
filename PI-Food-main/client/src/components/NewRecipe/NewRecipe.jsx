@@ -1,28 +1,82 @@
 import { useState } from 'react';
 import data from '../../utils/data';
 import './NewRecipe.css'
+import { Link } from 'react-router-dom';
 //aqui se crean nuevas recetas que eniare en formato de objeto al servidor
 
 const NewRecipe = () => {
 
-    const [selectedDiets, setSelectedDiets] = useState([]);
+    const [inputs, setInputs] = useState({
+        name: '',
+        summary: '',
+        healthScore: 0,
+        steps: '',
+        image: '',
+        diets: ''
+    });
 
-    const handleDietChange = (e)=>{
-        console.log(e.target)
-        const {value, checked} = e.target;
-        if(checked){
-            setSelectedDiets(prevSelectecDiets=>[...prevSelectecDiets, value]);
-        }else{
-            setSelectedDiets(prevSelectecDiets=>
-                prevSelectecDiets.filter(diet=> diet !== value)
-                );
-        }
+    const [errors, setErrors] = useState({
+        name: '',
+        summary: '',
+        healthScore: 0,
+        steps: '',
+        image: '',
+        diets: ''
+    });
+
+    function validateInputs(inputs){
+
+        const errors = {};
+        if(!errors.name) errors.name = 'falta nombre de la receta';
+        if(!errors.summary) errors.summary = 'falta resumen del plato';
+        if(!errors.healthScore) errors.healthScore = 'falta nivel de comida saludable';
+        if(!errors.steps) errors.steps = 'falta los pasos de la receta';
+
+        return errors;
+
     };
+
+    function handleChange(e) {
+        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+        const name = e.target.name;
+    
+        setInputs({
+          ...inputs,
+          [name]: value,
+        });
+    
+        setErrors(validateInputs({
+          ...inputs,
+          [name]: value,
+        }));
+      }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         // Aquí iría la lógica para crear la receta
-        console.log("¡Receta creada!");
+        console.log("¡Receta creada!", inputs);
+        const aux = Object.keys(errors);
+        if(aux.length===0){
+            setInputs({
+                name: '',
+                summary: '',
+                healthScore: 0,
+                steps: '',
+                image: '',
+                diets: ''
+            });
+
+            setErrors({
+                name: '',
+                summary: '',
+                healthScore: 0,
+                steps: '',
+                image: '',
+                diets: ''
+            })
+        }
+
+        window.alert('Receta creada con exito!');
       };
 
     return(
@@ -30,17 +84,17 @@ const NewRecipe = () => {
             <span className="title">Nueva receta</span>
             <div className="main">
                 <span>*Este campo es obligatorio</span>
-                <input type="text" name="title" placeholder="Nombre" />
+                <input type="text" name="name" placeholder="Nombre" onChange={handleChange} />
                 <span>*Este campo es oblogatorio</span>
-                <textarea name="" id="" cols="30" rows="10" placeholder="Resumen del plato" className="textarea"></textarea>
+                <textarea onChange={handleChange} name="summary" id="" cols="30" rows="10" placeholder="Resumen del plato" className="textarea"></textarea>
                 <span>*Este campo es obligatorio</span>
-                <input type="text" name='health score' placeholder='healthscore' />
+                <input type="text" name='healthScore' placeholder='healthscore' onChange={handleChange} />
                 <span>*Este campo es obligatorio</span>
-                <input type="text" name='steps' placeholder='Paso a paso'/>
-                <span>*Este campo es obligatorio</span>
+                <input type="text" name='steps' placeholder='Paso a paso' onChange={handleChange}/>
+                {/* <span>*Este campo es obligatorio</span> */}
                 <label>
-                    Cargar imagen:
-                    <input type="file" name="image" accept="image/*" />
+                    Url imagen:
+                    <input type="text" name="image" onChange={handleChange} />
                 </label>
                 <span>*Seleccione los tipos de dieta:</span>
                 {
@@ -48,16 +102,19 @@ const NewRecipe = () => {
                         <label key={el.id}>
                             <input 
                             type='checkbox' 
-                            name={el.id}
-                            value={el.id}
-                            checked={selectedDiets.includes(el.id)}
-                            onChange={handleDietChange}
+                            name={el.diets}
+                            value={el.diets}
+                            checked={inputs.diets.includes(el.diets)}
+                            onChange={handleChange}
                             />
                             {el.diets.join(', ')}
                         </label>
                     ))
                 }
                 <button>Crear Receta</button>
+                <Link to='/home'>
+                <h2>Volver</h2>
+                </Link>
             </div>
         </form>
     )

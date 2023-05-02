@@ -7,7 +7,7 @@ const Inicio = () =>{
         <div className="container">
 
             <img 
-            src="../../../../cooking.png" 
+            src="" 
             alt="imagen" />
             <Link to='/home'>
                 <button>Ingresar</button>
