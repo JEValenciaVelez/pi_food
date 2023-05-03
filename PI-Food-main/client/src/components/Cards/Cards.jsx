@@ -6,7 +6,7 @@ import Pagination from "./Pagination/Pagination";
 
 const Cards = () => {
 
-    const itemsPerPage = 10;
+    const itemsPerPage = 8;
     const currentPage = 1;
     const allItems = data;
     console.log(data)

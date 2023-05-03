@@ -1,7 +1,12 @@
 import './SearchBar.css';
 
 
-const SearchBar = () => {
+
+const SearchBar = (name) => {
+
+
+
+
 
     return(
         <div className="search">

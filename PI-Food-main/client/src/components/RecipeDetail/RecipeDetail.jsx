@@ -10,7 +10,7 @@ const RecipeDetail = ()=> {
     const [recipe, setRecipe] = useState({});
 
     useEffect(()=>{
-        axios(`http://localhost:3001/recipes/${id}`)
+        axios.get(`http://localhost:3001/recipes/${id}`)
         .then(({data})=>{
             //console.log(data)
             if(data.id ) setRecipe(data);

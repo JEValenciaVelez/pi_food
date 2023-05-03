@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import {  useState } from 'react';
 import data from '../../utils/data';
 import './NewRecipe.css'
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 //aqui se crean nuevas recetas que eniare en formato de objeto al servidor
 
 const NewRecipe = () => {
-
+    // inicializo los etados del componente del cual voy a obtener data del form y la voy a guardar en inputs
     const [inputs, setInputs] = useState({
         name: '',
         summary: '',
@@ -15,6 +17,7 @@ const NewRecipe = () => {
         diets: ''
     });
 
+    // creo un estado para el objeto errors si hay errores
     const [errors, setErrors] = useState({
         name: '',
         summary: '',
@@ -24,18 +27,20 @@ const NewRecipe = () => {
         diets: ''
     });
 
+    //funcion que valida la data de mis inputs
     function validateInputs(inputs){
 
         const errors = {};
-        if(!errors.name) errors.name = 'falta nombre de la receta';
-        if(!errors.summary) errors.summary = 'falta resumen del plato';
-        if(!errors.healthScore) errors.healthScore = 'falta nivel de comida saludable';
-        if(!errors.steps) errors.steps = 'falta los pasos de la receta';
+        if(!inputs.name) errors.name = 'falta nombre de la receta';
+        if(!inputs.summary) errors.summary = 'falta resumen del plato';
+        if(!inputs.healthScore) errors.healthScore = 'falta nivel de comida saludable';
+        if(!inputs.steps) errors.steps = 'falta los pasos de la receta';
 
         return errors;
 
     };
 
+// funcion que le asigna la data ingresada a mis inputs a mi objeto input
     function handleChange(e) {
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
         const name = e.target.name;
@@ -51,33 +56,26 @@ const NewRecipe = () => {
         }));
       }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Aquí iría la lógica para crear la receta
-        console.log("¡Receta creada!", inputs);
-        const aux = Object.keys(errors);
-        if(aux.length===0){
-            setInputs({
-                name: '',
-                summary: '',
-                healthScore: 0,
-                steps: '',
-                image: '',
-                diets: ''
-            });
+     
+      //funcion que envia la data a mi servidor, debe ser asyncrona para esperar respuesta y seguir ejecutando el codigo 
+        const handleSubmit = async (e) => {
+         e.preventDefault(); //evito q se refresque la pagina la hacer clickc en submit
 
-            setErrors({
-                name: '',
-                summary: '',
-                healthScore: 0,
-                steps: '',
-                image: '',
-                diets: ''
-            })
-        }
+         const errors = validateInputs(inputs);//valido que el objeto input tenga la data solicitada
 
-        window.alert('Receta creada con exito!');
-      };
+         setErrors(errors);//seteo el objeto errors deacuerdo a la validacion anterior
+
+         // Si no hay errores en los inputs, realizamos la solicitud HTTP POST al servidor
+         if(Object.keys(errors).length===0){
+          try{
+            const response = await axios.post(`http://localhost:3001/recipes`, inputs);
+            console.log(`Esta es la data de respuesta http: ${response.data}`,`el objeto input enviado: ${inputs}`);
+          }catch (error) {
+            console.log(error);
+          }
+         }
+         
+        };
 
     return(
         <form className="full" onSubmit={handleSubmit}>
