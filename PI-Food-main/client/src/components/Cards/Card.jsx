@@ -30,7 +30,7 @@ const Card = () => {
                         <h2>{el.title}</h2>
                         </Link>
                         <img src={el.image} alt="" />
-                        <h3>{el.diets.join(', ')}</h3>
+                        <h3>{el.diets}</h3>
                     </div>
                 ))
             }
