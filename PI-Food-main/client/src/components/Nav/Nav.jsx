@@ -1,15 +1,20 @@
 import { Link } from "react-router-dom";
 import './Nav.css';
-import SearchBar from "./SearchBar/SearchBar";
+
 
 
 
 const Nav = () => {
 
+    //aqui va la logica de los botones, y estados para el renderizado de las cards pasando props a searchBar para el boton de busqueda, abria q pasarle recipes para setear el resultado segun la busqueda
+    //implementar algoritmos de ordenamiento para los botones de ordenamiento de las cards
+   
+    
+
     return (
         <nav className="nav-bar">
         <Link to='/home'>
-        <img src="https://w7.pngwing.com/pngs/777/495/png-transparent-kitchen-cook-restaurant-chef-vinyl-group-kitchen-miscellaneous-kitchen-food.png" alt="logo.png" />
+        {/* <img src="https://w7.pngwing.com/pngs/777/495/png-transparent-kitchen-cook-restaurant-chef-vinyl-group-kitchen-miscellaneous-kitchen-food.png" alt="logo.png" /> */}
         </Link>
         <div className="nav-filters">
             <select>
@@ -33,7 +38,7 @@ const Nav = () => {
             <button>Ordenar por comida saludable ascendente</button>
             <button>Ordenar por comida saludable descendente</button>
         </div>
-        <SearchBar/>
+        
         <div className="nav-buttons">
             <Link to='/recipes'>
                 <button>Agregar Receta</button>

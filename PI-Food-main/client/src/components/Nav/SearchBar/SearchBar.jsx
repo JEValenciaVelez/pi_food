@@ -32,7 +32,7 @@ const SearchBar = () => {
 
     
 
-    const handlerSearch = () => {
+    const handleSearch = () => {
         console.log(recipes)
         
     };
@@ -42,9 +42,7 @@ const SearchBar = () => {
         <div className="search">
             <label htmlFor="search">Busca tus recetas</label>
             <input onChange={handleChange} type="search" name="search" />
-            <button onClick={handlerSearch}>Buscar</button>
-
-
+            <button onClick={handleSearch}>Buscar</button>
         </div>
     )
 };

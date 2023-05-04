@@ -1,11 +1,11 @@
 //import { useState, useEffect } from "react";
-import data from "../../utils/data";
+
 import './Card.css';
 import {Link} from 'react-router-dom'
 //import axios from "axios";
 
 
-const Card = () => {
+const Card = ({items}) => {
 
     // const [recipes, setRecipes] = useState[[]];
 
@@ -18,16 +18,19 @@ const Card = () => {
     //     });
     //     return setRecipes([]);
     // }, []);
-
+    //console.log(items)
+    
 
 
     return(
         <div className="card">
             {
-                data.map(el => (
+                
+                items.map(el => (
                     <div key={el.id}>
                         <Link to={`/recipes/${el.id}`}>
                         <h2>{el.title}</h2>
+                        <h2>{el.name}</h2>
                         </Link>
                         <img src={el.image} alt="" />
                         <h3>{el.diets}</h3>
