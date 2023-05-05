@@ -8,44 +8,45 @@ const{URL, API_KEY} = process.env;
 
 const getRecipeById = async (id) => {
 
-   const response = await axios.get(`${URL}${id}/information?apiKey=${API_KEY}`);   
+    //un bloque try-catch para manejar errores y evitar que el programa se detenga si ocurre un error durante la consulta a la API.
+   try {
+    const response = await axios.get(`${URL}${id}/information?apiKey=${API_KEY}`);
+    const data = response.data;
 
-   const data = response.data;
+    if (Object.keys(data).length > 0) {
+      const recipe = {
+        id: data.id,
+        name: data.title,
+        image: data.image,
+        summary: data.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+        healthscore: data.healthScore,
+        steps: data.instructions.replace(/<\/?[^>]+(>|$)/g, ""),
+        vegetarian: data.vegetarian,
+        vegan: data.vegan,
+        glutenFree: data.glutenFree,
+        diets: data.diets
+      };
 
-   console.log(data)
+      return recipe;
+    } else {
+      throw new Error("No se encontraron datos para esa receta.");
+    }  //Si la respuesta de la API no contiene datos, lanzo un error para manejarlo en el catch
+  } catch (error) { //Moví la sincronización de la tabla Recipe y la búsqueda de la receta en la base de datos al bloque catch, para que se ejecute solo si ocurre un error al consultar la API.
+    console.error(error);
 
-   if(data){
-
-     //abstraigo data de la api
-   const recipe = {
-    id: data.id,
-    name: data.title,
-    image: data.image,
-    summary: data.summary.replace(/<\/?[^>]+(>|$)/g, ""), //elimino caracteres irregulares del texto
-    healthscore: data.healthScore,
-    steps: data.instructions.replace(/<\/?[^>]+(>|$)/g, ""),
-    vegetarian: data.vegetarian,
-    vegan: data.vegan,
-    glutenFree: data.glutenFree,
-    diets: data.diets
-
-    };
-
-    return recipe;
-
-   }
-
-    //sincronizo la tabla Recipe de base de datos
+    // Si ocurre un error, sincroniza la tabla Recipe de base de datos y busca la receta por ID.
     await Recipe.sync();
 
-    //de la tabla me traigo por id
-    const RecetasEnBd = await Recipe.findAll({
-        where:{ID: id}
-    });
-    // const recetaById = RecetasEnBd.map(rec=> rec.ID === id);
+    //Usé findByPk en lugar de findAll para buscar la receta por ID en la base de datos, ya que solo estamos buscando una receta y no varias.
+    const recipeFromDb = await Recipe.findByPk(id);
 
-     return RecetasEnBd;
-
+    if (recipeFromDb) {
+        //Usé toJSON() para devolver los datos de la receta desde la base de datos como un objeto JSON en lugar de un modelo Sequelize
+      return recipeFromDb.toJSON();
+    } else {
+      throw new Error("No se encontró la receta en la base de datos.");
+    }
+  }
    
 };
 
@@ -53,51 +54,63 @@ const getRecipeById = async (id) => {
 
 const getRecipeByName = async (name) =>{
 
-    const nameToLowerCase = name.toLowerCase();
-
-    const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`);   
-
-    const data = response.data;
-
-    if(data){
-
-        const elementsOfData = Object.values(data)[0];
-        console.log(elementsOfData)
-        let results = [];
+    try {
+        if (!name) {
+          const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`);
+          const data = response.data;
     
-        for(let i=0; i<elementsOfData.length; i++){
-            const arr = elementsOfData[i].title.toLowerCase().replace(',','').split(' ');
-           console.log(arr,arr.includes(nameToLowerCase))
-           if(arr.includes(nameToLowerCase)) results.push(elementsOfData[i]);
-           
+          const elementsOfData = Object.values(data)[0];
+          return elementsOfData;
         }
     
-        results= results.map(el=>{
-            return {
-                id:el.id,
-                name: el.title,
-                image: el.image,
-                summary: el.summary.replace(/<\/?[^>]+(>|$)/g, ""),
-                vegetarian: el.vegetarian,
-                vegan: el.vegan,
-                glutenFree: el.glutenFree,
-                diets: el.diets
-            }
-        })
+        const nameToLowerCase = name.toLowerCase();
     
-        return results;  
-    }
-
+        const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`);
+        const data = response.data;
+    
+        let results = [];
+    
+        if (data) {
+          const elementsOfData = Object.values(data)[0];
+    
+          for (let i = 0; i < elementsOfData.length; i++) {
+            const arr = elementsOfData[i].title.toLowerCase().replace(",", "").split(" ");
+            if (arr.includes(nameToLowerCase)) results.push(elementsOfData[i]);
+          }
+    
+          results = results.map((el) => ({
+            id: el.id,
+            name: el.title,
+            image: el.image,
+            summary: el.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+            vegetarian: el.vegetarian,
+            vegan: el.vegan,
+            glutenFree: el.glutenFree,
+            diets: el.diets
+          }));
+        }
+    
+        if (results.length === 0) {
+          // Si no se encontraron resultados en la búsqueda, se sincroniza la tabla Recipe de la Bd y se busca por nombre.
+          await Recipe.sync();
+    
+          const recipesInDb = await Recipe.findAll({
+            where: {
+              Nombre: nameToLowerCase.split(",")[0]
+            }
+          });
+    
+          if (recipesInDb.length === 0) throw new Error("No se encontraron registros.");
+    
+          return recipesInDb.map((recipe) => recipe.toJSON());
+        }
+    
+        return results;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
    
-    const recetaEnBd = await Recipe.findAll({
-        where: {
-         Nombre: name
-         }
-     });
- 
-     if(!recetaEnBd) throw new Error('No se encontraron registros');
-
-     return recetaEnBd;
 };
 
 
@@ -105,30 +118,34 @@ const getRecipeByName = async (name) =>{
 
 const createRecipe = async (recipe) => {
 
-    if( !recipe.name || !recipe.summary || !recipe.image || !recipe.healthScore || !recipe.steps){
-        throw new Error('La receta debe tener propiedades  name, summary, image,healthScore, steps ');
-    }
+   // valido q se ingresen las propiedades requeridas del objeto recipe
+  if (!recipe.name || !recipe.summary || !recipe.image || !recipe.healthScore || !recipe.steps) {
+    throw new Error('The recipe must have properties name, summary, image, healthScore, steps');
+  }
 
-    //busco la receta en la BD
-    const recipeEncontrada = await Recipe.findAll({
-        where:{Nombre: recipe.name}
-    });
-    console.log('receta encontrada en BD',recipeEncontrada);
-    if(recipeEncontrada.length>0) throw new Error('La receta existe en base de datos')
+  // Chekeo q exista en base de datos
+  const recipeEncontrada = await Recipe.findOne({
+    where: { Nombre: recipe.name }
+  });
+  if (recipeEncontrada) {
+    throw new Error('The recipe already exists in the database');
+  }
 
+  //sincronizo tabla de recetas de la base de datos
+  await Recipe.sync();
 
-    //lleno los campos de la tabla Recipe de la bd con la data
-    const newRecipe = await Recipe.create({
-        Nombre: recipe.name,
-        imagen: recipe.image,
-        ResumenDelPlato: recipe.summary,
-        healthScore: recipe.healthScore,
-        PasoApaso: recipe.steps
-    });
+  // creo la receta en la base de datos
+  const newRecipe = await Recipe.create({
+    Nombre: recipe.name,
+    imagen: recipe.image,
+    ResumenDelPlato: recipe.summary,
+    healthScore: recipe.healthScore,
+    PasoApaso: recipe.steps
+  });
 
-    //console.log('receta creada en base de datos',newRecipe);
+  console.log('Recipe created in the database:', newRecipe);
 
-    return `Receta creada con exito`;
+  return 'Recipe created successfully';
   
 };
 
@@ -141,45 +158,41 @@ const getDiets = async () => {
 
     const data = response.data;
 
-    //console.log(data);
     const elementsOfData = Object.values(data)[0];
 
     const allDiets = [];
 
-    //extraigo de la api la datas de dietas y la guardo en un array
-     elementsOfData.forEach(async el => {
-        //console.log(el.diets.join(','));
+    //Utilizo un ciclo for en lugar de un forEach debido a que este último no espera a que todas las promesas se resuelvan
+    //antes de continuar, lo que puede causar errores al momento de guardar los datos en la BD.
+    for(let i = 0; i < elementsOfData.length; i++) {
+        const el = elementsOfData[i];
         allDiets.push(el.diets.join(',').split(','));
-    });
+    }
 
-    //console.log(allDiets)
-//como allDiets es un array de arrays, para eliminar los arrays internos y dejar solo los strings en un solo array 
-    const newArray = allDiets.flat(); //guardo alldiets en newarray sin los arrays anidados
+    const newArray = allDiets.flat();
 
-    const newArrayUnico = newArray.filter((item,index,self)=> self.indexOf(item)===index); // eliminar elementos duplicados
+    const newArrayUnico = newArray.filter((item,index,self)=> self.indexOf(item)===index);
 
-    //console.log(newArrayUnico);
+    await Diet.sync();
 
-    //ahora puedo guardar cada elemento del array en la tabla diets usando un foreach
-    newArrayUnico.forEach(async el=>{
+    //Utilizo un ciclo for en lugar de un forEach por la misma razón que antes.
+    for(let i = 0; i < newArrayUnico.length; i++) {
+        const el = newArrayUnico[i];
         await Diet.create({
             Nombre: el
-        })
-    });
+        });
+    }
 
-    // const descripcionTabla = await Diet.describe(); // describe la tabla Diet
+    await Diet.sync();
 
-    // console.log(descripcionTabla);
-    await Diet.sync(); // sincroniza el modelo con la base de datos
-
-    const dietsEnBD = await Diet.findAll(); // obtiene todos los registros de la tabla Diet en un array
+    const dietsEnBD = await Diet.findAll();
     
-    const nombres = dietsEnBD.map((diet) => diet.Nombre); // obtiene la columna Nombre de cada registro
+    const nombres = dietsEnBD.map((diet) => diet.Nombre);
     
-    //console.log(nombres); // muestra todos los valores de la columna Nombre
     if(nombres.length<1) throw new Error('No existen registros');
 
     return nombres.join(',');
+    
     
 };
 

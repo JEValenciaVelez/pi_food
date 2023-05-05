@@ -12,11 +12,12 @@ const router = Router();
 router.get('/recipes/:idRecipe', async (req, res)=>{
     const {idRecipe} = req.params;
 
-    try{
-        res.status(200).json( await getRecipeById(idRecipe));
-    }catch(error){
-        res.status(404).json({err: error.message});
-    }
+    try {
+        const recipe = await getRecipeById(idRecipe);
+        res.status(200).json(recipe);
+      } catch (error) {
+        res.status(404).json({ err: error.message });
+      }
 });
 
 // Esta ruta obtiene el detalle de una receta específica. Es decir que devuelve un objeto con la información pedida en el detalle de una receta.
