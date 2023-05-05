@@ -1,18 +1,18 @@
 //import { useState, useEffect } from "react";
-
+import { Link } from 'react-router-dom';
 import './Card.css';
-import {Link} from 'react-router-dom'
-//import axios from "axios";
+
+
 
 
 const Card = ({items}) => {
 
-
+    console.log(items);
 
     return(
         <div className="card">
             {
-                
+                //console.log(items)
                 items.map(el => (
                     <div key={el.id}>
                         <Link to={`/recipes/${el.id}`}>

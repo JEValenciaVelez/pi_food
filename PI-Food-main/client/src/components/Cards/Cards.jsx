@@ -9,7 +9,7 @@ import data from "../../utils/data";
 
 const Cards = ({items, order}) => {
 
-  console.log(order)
+  //console.log(order)
  // estados para la paginación
  const [currentPage, setCurrentPage] = useState(1);
  const [itemsPerPage, setItemsPerPage] = useState(6);

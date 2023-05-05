@@ -84,14 +84,14 @@ const Nav = ({setFilteredData, setOrder}) => {
               case "asc": {
                 const newArray = [...data].sort((a, b) => a.healthScore - b.healthScore);//para ordenar numeros ascendente
                 console.log(newArray)
-                setOrder('orden asc',newArray);
+                setOrder(newArray);
                 break;
                 
               }
               case "des": {
                 const newArray = [...data].sort((a, b) => b.healthScore - a.healthScore);
                 console.log(newArray)
-                setOrder('orden des', newArray);
+                setOrder( newArray);
                 break;
                 
               }
