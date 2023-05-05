@@ -7,8 +7,9 @@ import axios from "axios";
 import data from "../../utils/data";
 
 
-const Cards = ({items}) => {
+const Cards = ({items, order}) => {
 
+  console.log(order)
  // estados para la paginación
  const [currentPage, setCurrentPage] = useState(1);
  const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -46,14 +47,17 @@ const Cards = ({items}) => {
  };
 
  // setear las recetas obtenidas desde el input o desde los props
- useState(() => {
-   if (items.length > 0) {
-     setRecipes(items);
-   } else {
-     setRecipes(data);
-   }
- }, [items]);
+ useEffect(() => {
+  if (items.length > 0) {
+    setRecipes(items);
+  } else if (order.length > 0) {
+    setRecipes(order);
+  } else {
+    setRecipes(data);
+  }
+}, [items, order]);
 
+console.log(recipes)
 
   return(
     <div>

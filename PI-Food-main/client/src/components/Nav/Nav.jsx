@@ -6,9 +6,9 @@ import axios from "axios";
 
  
 
-const Nav = ({setFilteredData}) => {
+const Nav = ({setFilteredData, setOrder}) => {
 
-    
+
 
     //funcion para los filtros ***********************************************************************************
     const handleOption = async (e) => {
@@ -64,7 +64,69 @@ const Nav = ({setFilteredData}) => {
       //************************************************************************************************* */
 
       //funcion para los bobotenes de ordenamientos
-      const handleChange = () =>{};
+      const handleOrder = (e) =>{
+
+        console.log('clic en ordenar')
+          switch (e.target.value) {
+
+              case "A-Z": {
+                const newArray = [...data].sort((a, b) => a.title.charAt(0).localeCompare(b.title));
+                console.log(newArray)
+                setOrder(newArray);
+                break;
+              }
+              case "Z-A": {
+                const newArray = [...data].sort((a, b) => b.title.charAt(0).localeCompare(a.title));
+                console.log(newArray)
+                setOrder(newArray);
+                break;
+              }
+              case "asc": {
+
+                //algoritmo de ordenamiento asc por comida saludable
+                let cambio = true;
+                const newArray = [...data];
+                while (cambio) {
+                  cambio = false;
+                  for (let i = 0; i < newArray.length - 1; i++) {
+                     if (newArray[i].healthScore > newArray[i + 1].healthScore) {
+                         const temp = newArray[i];
+                         newArray[i] = newArray[i + 1];
+                         newArray[i + 1] = temp;
+                         cambio = true;
+                        }
+                    }
+                }
+                 setOrder(newArray);
+                 break;
+            }
+            case "des": {
+
+                //algoritmo de ordenamiento des por comida saludable
+                let cambio = true;
+                const newArray = [...data];
+                while (cambio) {
+                  cambio = false;
+                  for (let i = 0; i < newArray.length - 1; i++) {
+                     if (newArray[i].healthScore < newArray[i + 1].healthScore) {
+                         const temp = newArray[i];
+                         newArray[i] = newArray[i + 1];
+                         newArray[i + 1] = temp;
+                         cambio = true;
+                        }
+                    }
+                }
+                 setOrder(newArray);
+                 break;
+            }
+            
+            default :{
+                console.log(`Valor no válido: ${e.target.value}`);
+                break;
+            }
+        }
+
+    };
 
 
       //************************************************************************************************ */
@@ -93,10 +155,10 @@ const Nav = ({setFilteredData}) => {
             </select>
         </div>
         <div className="nav-order">
-            <button>Ordenar por nombre A-Z</button>
-            <button>Ordenar por nombre Z-A</button>
-            <button>Ordenar por comida saludable ascendente</button>
-            <button>Ordenar por comida saludable descendente</button>
+            <button onClick={handleOrder} value="A-Z">Ordenar por nombre A-Z</button>
+            <button onClick={handleOrder} value="Z-A">Ordenar por nombre Z-A</button>
+            <button onClick={handleOrder} value="asc">Ordenar por comida saludable ascendente</button>
+            <button onClick={handleOrder} value="des">Ordenar por comida saludable descendente</button>
         </div>
         
         <div className="nav-buttons">
