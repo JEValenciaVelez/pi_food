@@ -4,81 +4,65 @@ import data from "../../utils/data";
 import axios from "axios";
 
 
- //creo contexto con mayuscula inicial para que react lo pueda leer como componente para envolver un componente y pasarle data, otra opcion de pasar data entre componentes
-//  const MyContext = React.createContext();
+ 
 
 const Nav = () => {
 
-    //aqui va la logica de los botones, y estados para el renderizado de las cards pasando props a searchBar para el boton de busqueda, abria q pasarle recipes para setear el resultado segun la busqueda
-    //implementar algoritmos de ordenamiento para los botones de ordenamiento de las cards
-
-
-    //funcion que toma el valor del boton y setea el estado option del componente
-    const handleOption = (e) => {
-
-
-        if(e.target.value === 'gluten free'){
-
-            const itemsFiltrados = data.filter(el=>el.diets.includes(e.target.value));
+    //funcion para los filtros ***********************************************************************************
+    const handleOption = async (e) => {
+        switch (e.target.value) {
+          case 'gluten free': {
+            const itemsFiltrados = data.filter((el) => el.diets.includes(e.target.value));
             console.log(itemsFiltrados);
-
-        }
-
-        if(e.target.value ==="ketogenic"){
-
-            const itemsFiltrados = data.filter(el=>el.diets.includes(e.target.value));
-            console.log(itemsFiltrados)
-            if(itemsFiltrados.length===0) return window.alert(`No hay registros`);
-        }
-
-        if(e.target.value ==="vegetarian"){
-
-            const itemsFiltrados = data.filter(el=>el.diets.includes(e.target.value));
-            console.log(itemsFiltrados)
-            if(itemsFiltrados.length===0) return window.alert(`No hay registros`);
-        }
-
-        if(e.target.value ==="vegan"){
-
-            const itemsFiltrados = data.filter(el=>el.diets.includes(e.target.value));
+            break;
+          }
+          case 'ketogenic':
+          case 'vegetarian':
+          case 'vegan':
+          case 'pescatarian':
+          case 'paleolithic': {
+            const itemsFiltrados = data.filter((el) => el.diets.includes(e.target.value));
             console.log(itemsFiltrados);
-            if(itemsFiltrados.length===0) return window.alert(`No hay registros`);
+            if (itemsFiltrados.length === 0) {
+              window.alert('No hay registros');
+            }
+            break;
+          }
+          case 'api': {
+            try {
+              const response = await axios.get('http://localhost:3001/recipes/');//peticion a mi servidor
+              const apiData = response.data;
+              console.log(apiData);
+            } catch (error) {
+              console.error(error);
+            }
+            break;
+          }
+          case 'database': {
+            try {
+              const response = await axios.get('http://localhost:3001/recipes/');//peticion a mi servidor
+              const apiData = response.data;
+              console.log(apiData);
+            } catch (error) {
+              console.error(error);
+            }
+            break;
+          }
+          default: {
+            console.log(`Valor no válido: ${e.target.value}`);
+            break;
+          }
         }
+      };
 
-        
-        if(e.target.value ==="pescatarian"){
+      //************************************************************************************************* */
 
-            const itemsFiltrados = data.filter(el=>el.diets.includes(e.target.value));
-            console.log(itemsFiltrados);
-            if(itemsFiltrados.length===0) return window.alert(`No hay registros`);
-        }
+      //funcion para los bobotenes de ordenamientos
+      const handleChange = () =>{};
 
-        if(e.target.value ==="paleolithic"){
 
-            const itemsFiltrados = data.filter(el=>el.diets.includes(e.target.value));
-            console.log(itemsFiltrados)
-            if(itemsFiltrados.length===0) return window.alert(`No hay registros`);
-        } 
-        
-        if(e.target.value ==="api"){
-
-            let data = [];
-
-            const apiData = async ()=>{
-
-                const response = await axios.get('http://localhost:3001/recipes/');
-
-                data = response.data;
-
-                console.log(data)
-
-                return;
-            };
-
-            apiData();
-        }        
-
-    };
+      //************************************************************************************************ */
+    
     
 
     return (
