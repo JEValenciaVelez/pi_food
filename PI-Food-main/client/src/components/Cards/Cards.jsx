@@ -48,10 +48,10 @@ const Cards = ({items, order}) => {
 
  // setear las recetas obtenidas desde el input o desde los props
  useEffect(() => {
-  if (items.length > 0) {
-    setRecipes(items);
-  } else if (order.length > 0) {
+  if (order.length > 0) {
     setRecipes(order);
+  } else if (items.length > 0) {
+    setRecipes(items);
   } else {
     setRecipes(data);
   }

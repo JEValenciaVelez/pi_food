@@ -70,57 +70,33 @@ const Nav = ({setFilteredData, setOrder}) => {
           switch (e.target.value) {
 
               case "A-Z": {
-                const newArray = [...data].sort((a, b) => a.title.charAt(0).localeCompare(b.title));
+                const newArray = [...data].sort((a, b) => a.title.charAt(0).localeCompare(b.title.charAt(0)));
                 console.log(newArray)
                 setOrder(newArray);
                 break;
               }
               case "Z-A": {
-                const newArray = [...data].sort((a, b) => b.title.charAt(0).localeCompare(a.title));
+                const newArray = [...data].sort((a, b) => b.title.charAt(0).localeCompare(a.title.charAt(0)));//para ordenar strings descendente
                 console.log(newArray)
                 setOrder(newArray);
                 break;
               }
               case "asc": {
-
-                //algoritmo de ordenamiento asc por comida saludable
-                let cambio = true;
-                const newArray = [...data];
-                while (cambio) {
-                  cambio = false;
-                  for (let i = 0; i < newArray.length - 1; i++) {
-                     if (newArray[i].healthScore > newArray[i + 1].healthScore) {
-                         const temp = newArray[i];
-                         newArray[i] = newArray[i + 1];
-                         newArray[i + 1] = temp;
-                         cambio = true;
-                        }
-                    }
-                }
-                 setOrder(newArray);
-                 break;
-            }
-            case "des": {
-
-                //algoritmo de ordenamiento des por comida saludable
-                let cambio = true;
-                const newArray = [...data];
-                while (cambio) {
-                  cambio = false;
-                  for (let i = 0; i < newArray.length - 1; i++) {
-                     if (newArray[i].healthScore < newArray[i + 1].healthScore) {
-                         const temp = newArray[i];
-                         newArray[i] = newArray[i + 1];
-                         newArray[i + 1] = temp;
-                         cambio = true;
-                        }
-                    }
-                }
-                 setOrder(newArray);
-                 break;
-            }
+                const newArray = [...data].sort((a, b) => a.healthScore - b.healthScore);//para ordenar numeros ascendente
+                console.log(newArray)
+                setOrder('orden asc',newArray);
+                break;
+                
+              }
+              case "des": {
+                const newArray = [...data].sort((a, b) => b.healthScore - a.healthScore);
+                console.log(newArray)
+                setOrder('orden des', newArray);
+                break;
+                
+              }
             
-            default :{
+              default :{
                 console.log(`Valor no válido: ${e.target.value}`);
                 break;
             }

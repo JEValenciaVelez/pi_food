@@ -16,7 +16,7 @@ const Home = () => {
       <div className="display-cards">
         <span className="enunciado1">Mira tus recetas!</span>
         <span className="enunciado2"> Busca tus recetas favoritas!</span>
-        <Cards items={filteredData.length > 0 ? filteredData : data} order={order.length ? order : null}/>
+        <Cards items={filteredData.length > 0 ? filteredData : data} order={order.length ? order : []}/>
       </div>
       <Footer/>
     </div>
