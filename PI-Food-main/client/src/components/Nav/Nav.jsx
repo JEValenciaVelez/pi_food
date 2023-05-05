@@ -6,7 +6,9 @@ import axios from "axios";
 
  
 
-const Nav = () => {
+const Nav = ({setFilteredData}) => {
+
+    
 
     //funcion para los filtros ***********************************************************************************
     const handleOption = async (e) => {
@@ -14,6 +16,7 @@ const Nav = () => {
           case 'gluten free': {
             const itemsFiltrados = data.filter((el) => el.diets.includes(e.target.value));
             console.log(itemsFiltrados);
+            setFilteredData(itemsFiltrados);//seteo filtered data del componente padre home para luego pasarselo a cards y renderice la data
             break;
           }
           case 'ketogenic':
@@ -23,6 +26,7 @@ const Nav = () => {
           case 'paleolithic': {
             const itemsFiltrados = data.filter((el) => el.diets.includes(e.target.value));
             console.log(itemsFiltrados);
+            setFilteredData(itemsFiltrados);
             if (itemsFiltrados.length === 0) {
               window.alert('No hay registros');
             }
@@ -33,6 +37,7 @@ const Nav = () => {
               const response = await axios.get('http://localhost:3001/recipes/');//peticion a mi servidor
               const apiData = response.data;
               console.log(apiData);
+              setFilteredData(apiData);
             } catch (error) {
               console.error(error);
             }
@@ -41,8 +46,9 @@ const Nav = () => {
           case 'database': {
             try {
               const response = await axios.get('http://localhost:3001/recipes/');//peticion a mi servidor
-              const apiData = response.data;
-              console.log(apiData);
+              const dataBase = response.data;
+              console.log(dataBase);
+              setFilteredData(dataBase);
             } catch (error) {
               console.error(error);
             }
