@@ -1,55 +1,47 @@
-.container {
+.Inicio {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f2f2f2;
-  padding: 2rem;
+  background-image: url('https://w7.pngwing.com/pngs/777/495/png-transparent-kitchen-cook-restaurant-chef-vinyl-group-kitchen-miscellaneous-kitchen-food.png');
+  background-size: cover;
+  background-position: center;
 }
 
-h1 {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
+.Inicio h1 {
+  color: #f78f09;
+  font-size: 4rem;
+  margin-bottom: 1rem;
   text-align: center;
-  color: #333;
 }
 
-h2 {
+.Inicio h2 {
+  color: #f78f09;
   font-size: 2rem;
   margin-bottom: 2rem;
   text-align: center;
-  color: #555;
 }
 
-.image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-img {
+.Inicio img {
   max-width: 100%;
-  max-height: 500px;
-  object-fit: contain;
+  max-height: 100%;
 }
 
-button {
+.Inicio button {
+  background-color: #fff;
+  color: #333;
   padding: 1rem 2rem;
   font-size: 1.5rem;
   border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
   margin-top: 2rem;
-  max-width: 300px;
-  width: 80%;
 }
 
-button:hover {
-  background-color: #0062cc;
+.Inicio button:hover {
+  background-color: #333;
+  color: #fff;
 }
 

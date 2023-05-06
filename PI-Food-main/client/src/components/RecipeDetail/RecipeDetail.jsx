@@ -27,8 +27,11 @@ const RecipeDetail = ()=> {
         <Link to='/home'>
         <h2>{recipe.name}</h2>
         </Link>
+        <Link to={recipe.image}>
+        <h2>Imagen</h2>
+        </Link>
         
-        <img src={recipe.image} alt="" />
+        {/* <img src={recipe.image} alt="" /> */}
         <h2>Resumen del plato</h2>
         <p>{recipe.summary}</p>
         <h2>Healtscore: {recipe.healthscore}</h2>

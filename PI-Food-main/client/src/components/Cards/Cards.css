@@ -7,6 +7,10 @@
   list-style-type: none;
 }
 
+.cards-container h1 {
+  color: rgb(236, 120, 10);
+}
+
 .search {
   margin: 20px 0;
 }
