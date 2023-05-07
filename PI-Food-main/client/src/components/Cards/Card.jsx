@@ -20,6 +20,7 @@ const Card = ({items}) => {
                         <h2>{el.name}</h2>
                         </Link>
                         <img src={el.image} alt="" />
+                        {/* <h2>{el.summary}</h2> */}
                         <h3>{el.diets}</h3>
                     </div>
                 ))

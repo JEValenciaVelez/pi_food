@@ -45,7 +45,7 @@ const Nav = ({setFilteredData, setOrder}) => {
           }
           case 'database': {
             try {
-              const response = await axios.get('http://localhost:3001/recipes/');//peticion a mi servidor
+              const response = await axios.get('http://localhost:3001/database');//peticion a mi servidor
               const dataBase = response.data;
               console.log(dataBase);
               setFilteredData(dataBase);
