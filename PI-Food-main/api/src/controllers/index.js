@@ -38,7 +38,7 @@ const getRecipeById = async (id) => {
     await Recipe.sync();
 
     //Usé findByPk en lugar de findAll para buscar la receta por ID en la base de datos, ya que solo estamos buscando una receta y no varias.
-    const recipeFromDb = await Recipe.findByPk(id);
+    const recipeFromDb = await Recipe.findByPk(id);//guardo el reultado de la busqueda q es un objeto receta con el id especificdo
 
     if (recipeFromDb) {
         //Usé toJSON() para devolver los datos de la receta desde la base de datos como un objeto JSON en lugar de un modelo Sequelize
@@ -223,9 +223,30 @@ const getDataBase = async () => {
 
 };
 
+const deleteRecipe = async (name) => {
+  // esperar sincronización de la tabla
+  await Recipe.sync();
+
+  // buscar la receta en la tabla por su nombre
+  let recipe = await Recipe.findOne({
+    where:{
+      name: name
+    }
+  });
+
+  if (!recipe) {
+    // si no se encuentra la receta, lanzar una excepción indicando que no se encontró
+    throw new Error(`No se encontró la receta con nombre ${name}`);
+  }
+
+  // eliminar la receta de la base de datos
+  await recipe.destroy();
+
+  // retornar un mensaje indicando que se eliminó la receta exitosamente
+  return `Se eliminó la receta  ${name} exitosamente`;
+};
 
 
 
 
-
-module.exports = {getRecipeById, getRecipeByName, createRecipe, getDiets,getDataBase};
+module.exports = {getRecipeById, getRecipeByName, createRecipe, getDiets,getDataBase, deleteRecipe};

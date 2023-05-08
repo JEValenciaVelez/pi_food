@@ -5,6 +5,7 @@ import Home from './components/home/Home';
 import RecipeDetail from './components/RecipeDetail/RecipeDetail';
 import NewRecipe from './components/NewRecipe/NewRecipe';
 import React from 'react';
+import DeleteRecipe from './components/DeleteRecipe/DeleteRecipe';
 
 
 
@@ -17,6 +18,7 @@ function App() {
     <Route path='/home' element={<Home/>} />
     <Route path='/recipes/:id' element={<RecipeDetail/>} />
     <Route path='/recipes/' element={<NewRecipe/>} />
+    <Route path='/deleteRecipe' element={<DeleteRecipe/>} />
    </Routes>
   );
 }

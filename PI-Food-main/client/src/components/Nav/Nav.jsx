@@ -138,8 +138,14 @@ const Nav = ({setFilteredData, setOrder}) => {
         </div>
         
         <div className="nav-buttons">
-            <Link to='/recipes'>
+            <Link to='/recipes/'>
                 <button>Agregar Receta</button>
+            </Link>
+        </div>
+
+        <div className="nav-buttons">
+            <Link to='/deleteRecipe'>
+                <button>eliminar Receta database</button>
             </Link>
         </div>
     </nav>
