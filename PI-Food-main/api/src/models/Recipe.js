@@ -5,20 +5,20 @@ module.exports = (sequelize) => {
   // defino el modelo(tabla)
 
   sequelize.define('recipe', {
-    ID:{//columna
-      type: DataTypes.INTEGER,
+    id:{//columna
       primaryKey: true,
-      autoIncrement: true
+      type: DataTypes.UUID,
+     defaultValue: DataTypes.UUIDV4,
     },
-    Nombre: { //columna
+    name: { //columna
       type: DataTypes.STRING,
       allowNull: false,
     },
-    imagen: {//columna
+    image: {//columna
       type: DataTypes.STRING, 
       allowNull: true       
     },
-    ResumenPlato:{
+    summary:{
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    PasoApaso:{
+    steps:{
       type: DataTypes.STRING,
       allowNull: true,
     }

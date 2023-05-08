@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getRecipeById, getRecipeByName, createRecipe, getDiets } = require('../controllers');
+const { getRecipeById, getRecipeByName, createRecipe, getDiets, getDataBase } = require('../controllers');
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -42,6 +42,14 @@ router.get('/recipes/', async (req, res)=>{
 // Si no existe la receta, debe mostrar un mensaje adecuado.
 // Debe buscar tanto las de la API como las de la base de datos.
 
+router.get('/database', async (req, res)=>{
+
+    try{
+        res.status(200).json(await getDataBase());
+    }catch(error){
+        res.status(404).json({err: error.message});
+    }
+});
 
 
 router.post('/recipes', async (req, res)=>{

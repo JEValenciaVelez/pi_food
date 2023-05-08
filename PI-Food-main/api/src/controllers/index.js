@@ -56,7 +56,7 @@ const getRecipeByName = async (name) =>{
 
     try {
         if (!name) {
-          const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`);
+          const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=20`);
           const data = response.data;
     
           const elementsOfData = Object.values(data)[0];
@@ -65,7 +65,7 @@ const getRecipeByName = async (name) =>{
     
         const nameToLowerCase = name.toLowerCase();
     
-        const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`);
+        const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=20`);
         const data = response.data;
     
         let results = [];
@@ -125,7 +125,7 @@ const createRecipe = async (recipe) => {
 
   // Chekeo q exista en base de datos
   const recipeEncontrada = await Recipe.findOne({
-    where: { Nombre: recipe.name }
+    where: { name: recipe.name }
   });
   if (recipeEncontrada) {
     throw new Error('The recipe already exists in the database');
@@ -136,11 +136,11 @@ const createRecipe = async (recipe) => {
 
   // creo la receta en la base de datos
   const newRecipe = await Recipe.create({
-    Nombre: recipe.name,
-    imagen: recipe.image,
-    ResumenDelPlato: recipe.summary,
+    name: recipe.name,
+    image: recipe.image,
+    summary: recipe.summary,
     healthScore: recipe.healthScore,
-    PasoApaso: recipe.steps
+    steps: recipe.steps
   });
 
   console.log('Recipe created in the database:', newRecipe);
@@ -196,7 +196,29 @@ const getDiets = async () => {
     
 };
 
+//funcion para traer data de las recetas de la base de datos
+const getDataBase = async () => {
+
+  //sincronizo tabla recipe de la database
+  await Recipe.sync();
+
+  //accedo a la data de la tabla
+  const recipesDB = await Recipe.findAll();
+
+  //verifico que haya data 
+  if (recipesDB.length === 0) {
+    console.log("No hay recetas en la base de datos");
+    return "No hay recetas en la base de datos"; // o cualquier otro valor que quieras devolver en este caso
+  }
+
+  return recipesDB;
+  //console.log(recipesDB);
+
+};
 
 
 
-module.exports = {getRecipeById, getRecipeByName, createRecipe, getDiets};
+
+
+
+module.exports = {getRecipeById, getRecipeByName, createRecipe, getDiets,getDataBase};

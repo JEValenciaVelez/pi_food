@@ -7,9 +7,9 @@ module.exports = (sequelize) => {
 
   sequelize.define('diet', {
     ID:{//columna
-      type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+       type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
     },
     Nombre: { //columna
       type: DataTypes.STRING,
