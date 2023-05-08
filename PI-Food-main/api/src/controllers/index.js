@@ -55,29 +55,31 @@ const getRecipeById = async (id) => {
 const getRecipeByName = async (name) =>{
 
     try {
-        if (!name) {
+        if (!name) {//si no hay name
           const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=20`);
           const data = response.data;
     
           const elementsOfData = Object.values(data)[0];
-          return elementsOfData;
+          return elementsOfData; //devuelve todas las 20 recetas de la api
         }
-    
-        const nameToLowerCase = name.toLowerCase();
+
+        //si hay name
+        const nameToLowerCase = name.toLowerCase();//pasarlo a minuscula
     
         const response = await axios.get(`${URL}complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=20`);
         const data = response.data;
     
-        let results = [];
+        let results = [];//creo lista vacia para llenarla con los resultados de busqueda
     
-        if (data) {
-          const elementsOfData = Object.values(data)[0];
+        if (data) {//si hay data relacionada al name
+          const elementsOfData = Object.values(data)[0];//abstraigo el array con los objetos receta
     
-          for (let i = 0; i < elementsOfData.length; i++) {
-            const arr = elementsOfData[i].title.toLowerCase().replace(",", "").split(" ");
-            if (arr.includes(nameToLowerCase)) results.push(elementsOfData[i]);
+          for (let i = 0; i < elementsOfData.length; i++) {//itero en los elementos y evaluo
+            const arr = elementsOfData[i].title.toLowerCase().replace(",", "").split(" ");//el titulo lo paso a minuscula y donde halla ',' lo remplazo por espacio, luego lo convierto en array de estrings donde halla espacio lo separo por elementos de array
+            if (arr.includes(nameToLowerCase)) results.push(elementsOfData[i]);//evaluo si el array incluye el nombre en minuscula ingresado por parametro, si es true pushear el objeto receta en el array results
           }
-    
+
+          //creo un nuevo array desstructurando la data que necesito de results con un map
           results = results.map((el) => ({
             id: el.id,
             name: el.title,
@@ -89,24 +91,29 @@ const getRecipeByName = async (name) =>{
             diets: el.diets
           }));
         }
-    
+
+        //si no hay resultados
         if (results.length === 0) {
           // Si no se encontraron resultados en la búsqueda, se sincroniza la tabla Recipe de la Bd y se busca por nombre.
           await Recipe.sync();
-    
-          const recipesInDb = await Recipe.findAll({
+
+          //espero promesa de busqueda en tabla 
+          const recipesInDb = await Recipe.findAll({ //me trae en un array el objeto receta que coincida con la primera palabra del name
             where: {
-              Nombre: nameToLowerCase.split(",")[0]
+              name: nameToLowerCase.split(",")[0]
             }
           });
-    
+
+          //si no hay data
           if (recipesInDb.length === 0) throw new Error("No se encontraron registros.");
     
           return recipesInDb.map((recipe) => recipe.toJSON());
         }
     
         return results;
+
       } catch (error) {
+        
         console.error(error);
         throw error;
       }
