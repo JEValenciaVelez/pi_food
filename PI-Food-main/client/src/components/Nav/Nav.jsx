@@ -8,8 +8,6 @@ import axios from "axios";
 
 const Nav = ({setFilteredData, setOrder}) => {
 
-
-
     
     const handleOption = async (e) => {
         switch (e.target.value) {
