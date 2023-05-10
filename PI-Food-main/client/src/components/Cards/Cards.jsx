@@ -40,6 +40,7 @@ const Cards = ({items, order}) => {
      setRecipes(data);
    } catch (error) { //si hay error lo atrapo
      console.log(error); // lo muestro por consola
+     window.alert('Receta no encontrada')
    }
  };
 
@@ -70,7 +71,7 @@ console.log(recipes)
     <div>
       <div>
         <div className="cards-container">
-          <h1>Recetas Disponibles</h1>
+          {/* <h1>Recetas Disponibles</h1> */}
           <div className="search">
             <label htmlFor="search">Busca tus recetas</label>
             <input onChange={handleChange} type="search" name="search" />
