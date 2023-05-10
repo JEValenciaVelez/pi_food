@@ -4,10 +4,10 @@ import './NewRecipe.css'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-//aqui se crean nuevas recetas que eniare en formato de objeto al servidor
+
 
 const NewRecipe = () => {
-    // inicializo los etados del componente del cual voy a obtener data del form y la voy a guardar en inputs
+   
     const [inputs, setInputs] = useState({
         name: '',
         summary: '',
@@ -17,7 +17,7 @@ const NewRecipe = () => {
         diets: ''
     });
 
-    // creo un estado para el objeto errors si hay errores
+    
     const [errors, setErrors] = useState({
         name: '',
         summary: '',
@@ -27,7 +27,7 @@ const NewRecipe = () => {
         diets: ''
     });
 
-    //funcion que valida la data de mis inputs
+    
     function validateInputs(inputs){
 
         const errors = {};
@@ -40,8 +40,9 @@ const NewRecipe = () => {
 
     };
 
-// funcion que le asigna la data ingresada a mis inputs a mi objeto input
+
     function handleChange(e) {
+
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
         const name = e.target.name;
     
@@ -54,19 +55,21 @@ const NewRecipe = () => {
           ...inputs,
           [name]: value,
         }));
+
       }
 
      
-      //funcion que envia la data a mi servidor, debe ser asyncrona para esperar respuesta y seguir ejecutando el codigo 
+      
         const handleSubmit = async (e) => {
-         e.preventDefault(); //evito q se refresque la pagina la hacer clickc en submit
 
-         const errors = validateInputs(inputs);//valido que el objeto input tenga la data solicitada
+         e.preventDefault(); 
 
-         setErrors(errors);//seteo el objeto errors deacuerdo a la validacion anterior
+         const errors = validateInputs(inputs);
 
-         // Si no hay errores en los inputs, realizamos la solicitud HTTP POST al servidor
+         setErrors(errors);
+
          if(Object.keys(errors).length===0){
+
           try{
             const response = await axios.post(`http://localhost:3001/recipes`, inputs);
             console.log(`Esta es la data de respuesta http: ${response.data}`,`el objeto input enviado: ${inputs}`);
@@ -78,6 +81,7 @@ const NewRecipe = () => {
         };
 
     return(
+        
         <form className="full" onSubmit={handleSubmit}>
             <span className="title">Nueva receta</span>
             <div className="main">

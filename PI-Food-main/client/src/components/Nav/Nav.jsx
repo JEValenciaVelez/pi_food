@@ -10,14 +10,13 @@ const Nav = ({setFilteredData, setOrder}) => {
 
 
 
-    //funcion para los filtros ***********************************************************************************
+    
     const handleOption = async (e) => {
         switch (e.target.value) {
           case 'gluten free': {
             const itemsFiltrados = data.filter((el) => el.diets.includes(e.target.value));
             console.log(itemsFiltrados);
-            setFilteredData(itemsFiltrados);//seteo filtered data del componente padre home para luego pasarselo a cards y renderice la data
-            break;
+            setFilteredData(itemsFiltrados);
           }
           case 'ketogenic':
           case 'vegetarian':
@@ -34,7 +33,7 @@ const Nav = ({setFilteredData, setOrder}) => {
           }
           case 'api': {
             try {
-              const response = await axios.get('http://localhost:3001/recipes/');//peticion a mi servidor
+              const response = await axios.get('http://localhost:3001/recipes/');
               const apiData = response.data;
               console.log(apiData);
               setFilteredData(apiData);
@@ -45,7 +44,7 @@ const Nav = ({setFilteredData, setOrder}) => {
           }
           case 'database': {
             try {
-              const response = await axios.get('http://localhost:3001/database');//peticion a mi servidor
+              const response = await axios.get('http://localhost:3001/database');
               const dataBase = response.data;
               console.log(dataBase);
               setFilteredData(dataBase);
@@ -61,9 +60,8 @@ const Nav = ({setFilteredData, setOrder}) => {
         }
       };
 
-      //************************************************************************************************* */
-
-      //funcion para los bobotenes de ordenamientos
+      
+     
       const handleOrder = (e) =>{
 
         console.log('clic en ordenar')
@@ -76,13 +74,13 @@ const Nav = ({setFilteredData, setOrder}) => {
                 break;
               }
               case "Z-A": {
-                const newArray = [...data].sort((a, b) => b.title.charAt(0).localeCompare(a.title.charAt(0)));//para ordenar strings descendente
+                const newArray = [...data].sort((a, b) => b.title.charAt(0).localeCompare(a.title.charAt(0)));
                 console.log(newArray)
                 setOrder(newArray);
                 break;
               }
               case "asc": {
-                const newArray = [...data].sort((a, b) => a.healthScore - b.healthScore);//para ordenar numeros ascendente
+                const newArray = [...data].sort((a, b) => a.healthScore - b.healthScore);
                 console.log(newArray)
                 setOrder(newArray);
                 break;
@@ -103,10 +101,6 @@ const Nav = ({setFilteredData, setOrder}) => {
         }
 
     };
-
-
-      //************************************************************************************************ */
-    
     
 
     return (

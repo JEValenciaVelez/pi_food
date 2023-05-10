@@ -5,20 +5,19 @@ import './DeleteRecipe.css'
 
 
 
-//componenete de eliminacion de receta de base de datos
+
 const DeleteRecipe = () => {
-    // creo estado para nombre de receta y su metodo de cambio de estado
+    
     const [name, setName] = useState('');
   
-    // creo función que me setea el valor del name
+    
     const handleChange = (e) => {
       setName(e.target.value);
     };
   
-    // función que hace la petición HTTP
+    
     const handleSubmit = async (e) => {
-      e.preventDefault();//funcion que evita que se refresque la pagina
-  
+      e.preventDefault();
       try {
         const response = await axios.delete('http://localhost:3001/deleteRecipe', { data: { name } });
         console.log(`Esta es la data de respuesta http: ${response.data}`, `el nombre de la receta enviada: ${name}`);

@@ -5,12 +5,10 @@ import Cards from "../Cards/Cards";
 import Footer from "../Footer/Footer";
 import './Home.css';
 
-//componente Home
+
 const Home = () => {
 
-  //estados del componente Home
-  //en el componente nav seteo el estado de filtereddata y Order deacuero a los eventos del usuario con los botones clickeados.
-  //y en el componente cards le paso los estados seteados para renderizado
+ 
   const [filteredData, setFilteredData] = useState([]);
   const [order , setOrder] = useState([]);
 

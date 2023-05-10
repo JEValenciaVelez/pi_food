@@ -12,14 +12,12 @@ const RecipeDetail = ()=> {
     useEffect(()=>{
         axios.get(`http://localhost:3001/recipes/${id}`)
         .then(({data})=>{
-            //console.log(data)
             if(data.id ) setRecipe(data);
             else window.alert('No hay recetas con ese id');
         });
         return setRecipe({});
     }, [id]);
 
-    console.log(recipe)
 
     return (
        <div className="container">

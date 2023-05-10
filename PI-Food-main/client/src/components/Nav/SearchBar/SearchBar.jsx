@@ -5,17 +5,14 @@ import { useEffect, useState } from 'react';
 
 
 const SearchBar = () => {
-   // creo estado para almacenar la data obtenida de la peticion http
+   
     const [recipes, setRecipes] = useState([]);
-
-    //creo estado para almacenar la data obtenida del input
     const [name ,setName] = useState('');
 
     const handleChange = (e) => {
         setName(e.target.value);
     };
 
-    //renderizo este componente por medio del hook usseEfect con la data entregada por medio de la peticion http
     useEffect(() => {
         const getRecipes = async () => {
           try {
